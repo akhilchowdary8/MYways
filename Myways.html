@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User Form</title>
+</head>
+<body>
+<h1>
+User Form</h1>
+<form id ="userform">
+<div>
+<label for="name"> Name:</label>
+<input type="text" id="name" name="name" required>
+</div>
+<div>
+<label for="email">email:</label>
+<input type="email" id="email" name="email" required>
+</div>
+<div>
+<label for="phone">Phone:</label>
+<input type="tel" id="phone" name="phone" required>
+</div>
+<button type="submit" >Submit></button>
+</form>
+<script>
+const userform=document.getElementById('userform');
+userform.addEventListener('submit',async(event)=>{
+event.preventDefault();
+const name=document.getElementById('name').value;
+const email=document.getElementById('email').value;
+const phone=document.getElementById('phone').value;
+
+try{
+const response =await fetch(`https://test-api-v3.myways.ai/user?email=${email}`);
+const user=await response.json();
+console.log(user);
+if(user.email==email){
+alert('user found');
+}
+else{
+const createUserResponse=await fetch('https://test-api-v3.myways.ai/user',{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({name,email,phone})
+}
+)
+const createduser=await createUserResponse.json();
+alert('user created sucessfully');
+}
+}
+catch(error){
+
+alert('An error occured while submitting the form,try again');
+}
+});
+
+
+</script>
+
+
+</body>
